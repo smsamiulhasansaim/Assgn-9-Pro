@@ -1,0 +1,22 @@
+{
+  "testimonials": [
+    {
+      "id": 1,
+      "text": "My kids absolutely love the educational toys from ToyTopia! The quality is exceptional and they learn while having fun.",
+      "author": "Sarah M.",
+      "color": "#FF6B8B"
+    },
+    {
+      "id": 2,
+      "text": "Fast delivery and amazing customer service. The toys arrived in perfect condition. Will definitely shop again!",
+      "author": "John D.",
+      "color": "#6A5AF9"
+    },
+    {
+      "id": 3,
+      "text": "The STEM toys have helped my child develop problem-solving skills in a fun way. Highly recommended for all parents!",
+      "author": "Lisa T.",
+      "color": "#4ECDC4"
+    }   
+  ]
+}
