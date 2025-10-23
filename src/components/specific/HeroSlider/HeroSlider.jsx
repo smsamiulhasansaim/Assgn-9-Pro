@@ -14,7 +14,7 @@ const HeroSlider = () => {
       description: "Discover our amazing collection of toys that spark creativity and imagination in children of all ages.",
       buttonText: "Shop Now",
       buttonLink: "#",
-      bgImage: "https://cdn.pixabay.com/photo/2017/07/31/16/10/bounce-house-2560578_1280.jpg"
+      bgImage: "https://cdn.firstcry.com/education/2022/11/06094158/Toy-Names-For-Kids.jpg"
     },
     {
       id: 2,
@@ -22,7 +22,7 @@ const HeroSlider = () => {
       description: "Learning through play with our selection of STEM and educational toys that make education fun.",
       buttonText: "Explore Learning Toys",
       buttonLink: "#",
-      bgImage: "https://cdn.pixabay.com/photo/2016/11/29/13/11/train-1869471_1280.jpg"
+      bgImage: "https://png.pngtree.com/background/20231030/original/pngtree-d-toys-for-kids-development-on-yellow-background-with-clayzilla-picture-image_5794969.jpg"
     },
     {
       id: 3,
@@ -30,7 +30,7 @@ const HeroSlider = () => {
       description: "From LEGO to magnetic tiles, our building toys help develop problem-solving skills and creativity.",
       buttonText: "View Building Toys",
       buttonLink: "#",
-      bgImage: "https://cdn.pixabay.com/photo/2016/03/31/20/11/lego-1297582_1280.png"
+      bgImage: "https://cdn.pixabay.com/photo/2015/10/05/17/09/minion-972908_640.jpg"
     }
   ];
 

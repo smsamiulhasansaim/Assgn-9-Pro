@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { FaStar } from 'react-icons/fa';
 import './PopularToys.css';
-import { Link } from 'react-router';
-
 const PopularToys = () => {
     const [toys, setToys] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -40,16 +39,16 @@ const PopularToys = () => {
         const hasHalfStar = rating % 1 >= 0.5;
 
         for (let i = 0; i < fullStars; i++) {
-            stars.push(<span key={i} className="star full">★</span>);
+            stars.push(<FaStar key={i} className="text-yellow-400 text-lg" />);
         }
 
         if (hasHalfStar) {
-            stars.push(<span key="half" className="star half">★</span>);
+            stars.push(<FaStar key="half" className="text-yellow-400 text-lg opacity-70" />);
         }
 
         const emptyStars = 5 - stars.length;
         for (let i = 0; i < emptyStars; i++) {
-            stars.push(<span key={`empty-${i}`} className="star empty">★</span>);
+            stars.push(<FaStar key={`empty-${i}`} className="text-gray-300 text-lg" />);
         }
 
         return stars;
@@ -61,69 +60,86 @@ const PopularToys = () => {
 
     if (loading) {
         return (
-            <section className="popular-toys">
-                <div className="container">
-                    <div className="section-header">
-                        <h2>Popular Toys</h2>
-                        <p>Check out our best-selling toys loved by kids and parents alike</p>
+            <section className="py-20 bg-linear-to-b from-gray-50 to-gray-100 relative">
+                <div className="max-w-6xl mx-auto px-5">
+                    <div className="text-center mb-15">
+                        <h2 className="text-4xl font-bold text-gray-800 mb-4 relative">
+                            Popular Toys
+                        </h2>
+                        <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                            Check out our best-selling toys loved by kids and parents alike
+                        </p>
                     </div>
-                    <div className="loading-spinner">Loading popular toys...</div>
+                    <div className="text-center py-15 text-xl text-gray-600">Loading popular toys...</div>
                 </div>
             </section>
         );
     }
 
     return (
-        <section className="popular-toys">
-            <div className="container">
-                <div className="section-header">
-                    <h2>Popular Toys</h2>
-                    <p>Check out our best-selling toys loved by kids and parents alike</p>
+        <section className="py-20 bg-linear-to-b from-gray-50 to-gray-100 relative">
+            <div className="max-w-6xl mx-auto px-5">
+                <div className="text-center mb-15">
+                    <h2 className="text-4xl font-bold text-gray-800 mb-4 relative">
+                        Popular Toys
+                    </h2>
+                    <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                        Check out our best-selling toys loved by kids and parents alike
+                    </p>
                 </div>
                 
-                <div className="toys-grid" id="popular-toys-grid">
-                    {toys.map(toy => (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+                    {toys.map((toy, index) => (
                         <div 
                             key={toy.toyId} 
-                            className="toy-card"
+                            className="bg-white rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl border border-gray-100 flex flex-col cursor-pointer animate-fade-in-up"
+                            style={{ animationDelay: `${(index + 1) * 0.1}s` }}
                             onClick={() => handleToyClick(toy.toyId)}
-                            style={{ cursor: 'pointer' }}
                         >
-                            <div className="toy-image">
+                            <div className="relative h-48 overflow-hidden bg-gray-50 shrink-0">
                                 <img 
                                     src={toy.pictureURL} 
                                     alt={toy.toyName}
                                     loading="lazy"
+                                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                                 />
-                                <div className="toy-badge">Popular</div>
+                                <div className="absolute top-3 right-3 bg-linear-to-r from-red-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide">
+                                    Popular
+                                </div>
                             </div>
                             
-                            <div className="toy-content">
-                                <h3 className="toy-name">{toy.toyName}</h3>
+                            <div className="p-6 flex flex-col grow justify-between">
+                                <h3 className="text-xl font-bold text-gray-800 mb-4 line-clamp-2 leading-tight">
+                                    {toy.toyName}
+                                </h3>
                                 
-                                <div className="toy-meta">
-                                    <div className="toy-rating">
-                                        {renderStars(toy.rating)}
-                                        <span className="rating-value">({toy.rating})</span>
+                                <div className="flex justify-between items-center mb-4 pb-4 border-b border-gray-100">
+                                    <div className="flex items-center gap-2">
+                                        <div className="flex gap-1">
+                                            {renderStars(toy.rating)}
+                                        </div>
+                                        <span className="text-gray-600 text-sm font-semibold">({toy.rating})</span>
                                     </div>
-                                    <div className="toy-category">{toy.subCategory}</div>
+                                    <div className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide">
+                                        {toy.subCategory}
+                                    </div>
                                 </div>
                                 
-                                <div className="toy-footer">
-                                    <div className="toy-price">{formatPrice(toy.price)}</div>
+                                <div className="flex justify-between items-center mb-4">
+                                    <div className="text-2xl font-bold text-gray-800">{formatPrice(toy.price)}</div>
                                     <div className="toy-stock">
                                         {toy.availableQuantity > 10 ? (
-                                            <span className="in-stock">In Stock</span>
+                                            <span className="bg-green-100 text-green-600 px-3 py-1 rounded-lg text-sm font-semibold">In Stock</span>
                                         ) : toy.availableQuantity > 0 ? (
-                                            <span className="low-stock">Low Stock</span>
+                                            <span className="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-lg text-sm font-semibold">Low Stock</span>
                                         ) : (
-                                            <span className="out-of-stock">Out of Stock</span>
+                                            <span className="bg-red-100 text-red-600 px-3 py-1 rounded-lg text-sm font-semibold">Out of Stock</span>
                                         )}
                                     </div>
                                 </div>
                                 
                                 <button 
-                                    className="view-more-btn"
+                                    className="w-full bg-linear-to-r from-[#667eea] to-[#764ba2] text-white border-none py-3 rounded-xl text-base font-semibold cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg uppercase tracking-wide mt-auto"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         handleToyClick(toy.toyId);
@@ -135,13 +151,16 @@ const PopularToys = () => {
                         </div>
                     ))}
                 </div>
-            </div>
-            <div className="flex justify-center items-center mt-10">
-            <button className="btn btn-neutral btn-dash">
-               <Link to="/shop">See All Toys</Link>
-            </button>
-            </div>
 
+                <div className="flex justify-center items-center mt-12">
+                    <Link 
+                        to="/shop" 
+                        className="bg-gray-800 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 hover:bg-gray-700 hover:-translate-y-1 hover:shadow-lg"
+                    >
+                        See All Toys
+                    </Link>
+                </div>
+            </div>
         </section>
     );
 };

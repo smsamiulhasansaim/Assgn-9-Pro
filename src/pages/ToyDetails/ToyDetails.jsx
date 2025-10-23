@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import './ToyDetails.css';
+import { FaStar, FaArrowLeft, FaShoppingCart, FaBolt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
 const ToyDetails = () => {
@@ -19,13 +19,12 @@ const ToyDetails = () => {
                 const foundToy = data.find(t => t.toyId === parseInt(toyId));
                 
                 if (foundToy) {
-                    // Add multiple images for demo (in real app, this would come from API)
                     const toyWithImages = {
                         ...foundToy,
                         images: [
                             foundToy.pictureURL,
-                            foundToy.pictureURL, // Duplicate for demo
-                            foundToy.pictureURL, // In real app, these would be different angles
+                            foundToy.pictureURL,
+                            foundToy.pictureURL,
                         ],
                         specifications: {
                             material: "High-quality Plastic",
@@ -67,23 +66,23 @@ const ToyDetails = () => {
         const hasHalfStar = rating % 1 >= 0.5;
 
         for (let i = 0; i < fullStars; i++) {
-            stars.push(<span key={i} className="star full">★</span>);
+            stars.push(<FaStar key={i} className="text-yellow-400 text-xl" />);
         }
 
         if (hasHalfStar) {
-            stars.push(<span key="half" className="star half">★</span>);
+            stars.push(<FaStar key="half" className="text-yellow-400 text-xl opacity-70" />);
         }
 
         const emptyStars = 5 - stars.length;
         for (let i = 0; i < emptyStars; i++) {
-            stars.push(<span key={`empty-${i}`} className="star empty">★</span>);
+            stars.push(<FaStar key={`empty-${i}`} className="text-gray-300 text-xl" />);
         }
 
         return stars;
     };
 
     const handleAddToCart = () => {
-       toast(`Added ${quantity} ${toy.toyName} to cart!`);
+        toast(`Added ${quantity} ${toy.toyName} to cart!`);
     };
 
     const handleBuyNow = () => {
@@ -92,19 +91,22 @@ const ToyDetails = () => {
 
     if (loading) {
         return (
-            <div className="toy-details-loading">
-                <div className="loading-spinner">Loading toy details...</div>
+            <div className="min-h-screen flex justify-center items-center bg-gray-50">
+                <div className="text-xl text-gray-600">Loading toy details...</div>
             </div>
         );
     }
 
     if (!toy) {
         return (
-            <div className="toy-not-found">
-                <div className="container">
-                    <h2>Toy Not Found</h2>
-                    <p>The toy you're looking for doesn't exist.</p>
-                    <button onClick={() => navigate('/')} className="back-btn">
+            <div className="min-h-screen flex justify-center items-center bg-gray-50">
+                <div className="text-center">
+                    <h2 className="text-3xl font-bold text-gray-800 mb-4">Toy Not Found</h2>
+                    <p className="text-gray-600 mb-6">The toy you're looking for doesn't exist.</p>
+                    <button 
+                        onClick={() => navigate('/')} 
+                        className="bg-linear-to-r from-[#667eea] to-[#764ba2] text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg"
+                    >
                         Back to Home
                     </button>
                 </div>
@@ -113,77 +115,108 @@ const ToyDetails = () => {
     }
 
     return (
-        <section className="toy-details">
-            <div className="container">
-                {/* Updated Breadcrumb */}
-                <nav className="breadcrumb">
-                    <button onClick={() => navigate('/')} className="breadcrumb-link">Home</button>
-                    <span className="breadcrumb-separator">/</span>
-                    <button onClick={() => navigate('/shop')} className="breadcrumb-link">Shop</button>
-                    <span className="breadcrumb-separator">/</span>
-                    <span className="breadcrumb-current">{toy.toyName}</span>
+        <section className="min-h-screen bg-gray-50 py-8">
+            <div className="max-w-6xl mx-auto px-4">
+                <nav className="flex items-center gap-2 mb-8 text-sm">
+                    <button 
+                        onClick={() => navigate('/')} 
+                        className="text-[#667eea] hover:underline transition-colors duration-200"
+                    >
+                        Home
+                    </button>
+                    <span className="text-gray-400">/</span>
+                    <button 
+                        onClick={() => navigate('/shop')} 
+                        className="text-[#667eea] hover:underline transition-colors duration-200"
+                    >
+                        Shop
+                    </button>
+                    <span className="text-gray-400">/</span>
+                    <span className="text-gray-800 font-semibold truncate max-w-[200px]">
+                        {toy.toyName}
+                    </span>
                 </nav>
 
-                <div className="toy-details-content">
-                    {/* Image Gallery */}
-                    <div className="image-gallery">
-                        <div className="main-image">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-white rounded-2xl p-8 shadow-lg">
+                    <div className="space-y-6">
+                        <div className="w-full h-96 rounded-xl overflow-hidden bg-gray-100">
                             <img 
                                 src={toy.images[selectedImage]} 
                                 alt={toy.toyName}
+                                className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                             />
                         </div>
-                        <div className="thumbnail-list">
+                        <div className="flex gap-4 justify-center">
                             {toy.images.map((image, index) => (
                                 <div 
                                     key={index}
-                                    className={`thumbnail ${selectedImage === index ? 'active' : ''}`}
+                                    className={`w-20 h-20 rounded-lg overflow-hidden cursor-pointer transition-all duration-200 border-2 ${
+                                        selectedImage === index 
+                                            ? 'border-[#667eea] scale-105' 
+                                            : 'border-transparent hover:border-gray-300'
+                                    }`}
                                     onClick={() => setSelectedImage(index)}
                                 >
-                                    <img src={image} alt={`${toy.toyName} view ${index + 1}`} />
+                                    <img 
+                                        src={image} 
+                                        alt={`${toy.toyName} view ${index + 1}`}
+                                        className="w-full h-full object-cover"
+                                    />
                                 </div>
                             ))}
                         </div>
                     </div>
-
-                    {/* Product Info */}
-                    <div className="product-info">
-                        <div className="product-header">
-                            <h1 className="product-title">{toy.toyName}</h1>
-                            <div className="product-rating">
-                                {renderStars(toy.rating)}
-                                <span className="rating-value">({toy.rating})</span>
-                                <span className="reviews-count">128 Reviews</span>
+                    <div className="space-y-6">
+                        <div className="border-b border-gray-200 pb-6">
+                            <h1 className="text-3xl font-bold text-gray-800 mb-4 leading-tight">
+                                {toy.toyName}
+                            </h1>
+                            <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2">
+                                    {renderStars(toy.rating)}
+                                    <span className="text-gray-600 font-semibold">({toy.rating})</span>
+                                </div>
+                                <span className="text-[#667eea] underline cursor-pointer text-sm">
+                                    128 Reviews
+                                </span>
                             </div>
                         </div>
 
-                        <div className="product-price">
-                            <span className="current-price">{formatPrice(toy.price)}</span>
-                            <span className="original-price">৳{(toy.price * 1.2).toFixed(2)}</span>
-                            <span className="discount">Save 20%</span>
+                        <div className="flex items-center gap-4">
+                            <span className="text-4xl font-bold text-gray-800">
+                                {formatPrice(toy.price)}
+                            </span>
+                            <span className="text-2xl text-gray-500 line-through">
+                                ৳{(toy.price * 1.2).toFixed(2)}
+                            </span>
+                            <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                Save 20%
+                            </span>
                         </div>
 
-                        <div className="product-description">
+                        <div className="text-gray-700 leading-relaxed text-lg">
                             <p>{toy.description}</p>
                         </div>
-
-                        {/* Key Features */}
-                        <div className="key-features">
-                            <h3>Key Features</h3>
-                            <ul>
+                        <div>
+                            <h3 className="text-xl font-semibold text-gray-800 mb-4">Key Features</h3>
+                            <ul className="space-y-2">
                                 {toy.features.map((feature, index) => (
-                                    <li key={index}>{feature}</li>
+                                    <li key={index} className="flex items-center gap-3 text-gray-700">
+                                        <span className="text-green-500 font-bold">✓</span>
+                                        {feature}
+                                    </li>
                                 ))}
                             </ul>
                         </div>
-
-                        {/* Quantity Selector */}
-                        <div className="quantity-selector">
-                            <label htmlFor="quantity">Quantity:</label>
-                            <div className="quantity-controls">
+                        <div className="flex items-center gap-4">
+                            <label htmlFor="quantity" className="font-semibold text-gray-800">
+                                Quantity:
+                            </label>
+                            <div className="flex items-center border-2 border-gray-200 rounded-xl overflow-hidden">
                                 <button 
                                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                                     disabled={quantity <= 1}
+                                    className="bg-gray-100 px-4 py-3 text-xl transition-colors duration-200 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     -
                                 </button>
@@ -194,56 +227,65 @@ const ToyDetails = () => {
                                     min="1"
                                     max="10"
                                     onChange={(e) => setQuantity(Math.max(1, Math.min(10, parseInt(e.target.value) || 1)))}
+                                    className="w-16 text-center text-lg font-semibold border-none focus:outline-none"
                                 />
                                 <button 
                                     onClick={() => setQuantity(Math.min(10, quantity + 1))}
                                     disabled={quantity >= 10}
+                                    className="bg-gray-100 px-4 py-3 text-xl transition-colors duration-200 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     +
                                 </button>
                             </div>
                         </div>
-
-                        {/* Stock Status - Improved */}
-                        <div className="stock-status">
-                    
+                        <div className={`text-sm font-semibold px-4 py-2 rounded-lg ${
+                            toy.availableQuantity > 10 
+                                ? 'bg-green-100 text-green-700'
+                                : toy.availableQuantity > 0
+                                ? 'bg-yellow-100 text-yellow-700'
+                                : 'bg-red-100 text-red-700'
+                        }`}>
+                            {toy.availableQuantity > 10 
+                                ? '✓ In Stock'
+                                : toy.availableQuantity > 0
+                                ? '⚠ Low Stock'
+                                : '✗ Out of Stock'
+                            }
                         </div>
-
-                        {/* Action Buttons */}
-                        <div className="action-buttons">
+                        <div className="flex gap-4">
                             <button 
-                                className="add-to-cart-btn"
+                                className="flex-1 bg-linear-to-r from-[#667eea] to-[#764ba2] text-white py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                                 onClick={handleAddToCart}
                                 disabled={toy.availableQuantity === 0}
                             >
+                                <FaShoppingCart />
                                 Add to Cart
                             </button>
                             <button 
-                                className="buy-now-btn"
+                                className="flex-1 bg-linear-to-r from-red-500 to-orange-500 text-white py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                                 onClick={handleBuyNow}
                                 disabled={toy.availableQuantity === 0}
                             >
+                                <FaBolt />
                                 Buy Now
                             </button>
                         </div>
-
-                        {/* Additional Info */}
-                        <div className="additional-info">
-                            <div className="info-item">
-                                <span className="info-label">Category:</span>
-                                <span className="info-value">{toy.subCategory}</span>
+                        <div className="border-t border-gray-200 pt-6 space-y-3">
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-800">Category:</span>
+                                <span className="text-gray-700">{toy.subCategory}</span>
                             </div>
-                            <div className="info-item">
-                                <span className="info-label">Seller:</span>
-                                <span className="info-value">{toy.sellerName}</span>
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-800">Seller:</span>
+                                <span className="text-gray-700">{toy.sellerName}</span>
                             </div>
-                            <div className="info-item">
-                                <span className="info-label">Free Shipping:</span>
-                                <span className="info-value">On orders over ৳500</span>
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-800">Free Shipping:</span>
+                                <span className="text-gray-700">On orders over ৳500</span>
                             </div>
-                            <div className="info-item">
-                                <span className="info-label">Returns:</span>
-                                <span className="info-value">30 days return policy</span>
+                            <div className="flex justify-between">
+                                <span className="font-semibold text-gray-800">Returns:</span>
+                                <span className="text-gray-700">30 days return policy</span>
                             </div>
                         </div>
                     </div>
@@ -253,4 +295,4 @@ const ToyDetails = () => {
     );
 };
 
-export default ToyDetails;  
+export default ToyDetails;

@@ -1,3 +1,7 @@
 @import "tailwindcss";
 /* Import Tailwind Css */
 @plugin "daisyui"{themes: light --default;}
+
+.body {
+font-family: 'Comic Neue', cursive, Arial, sans-serif;
+}
